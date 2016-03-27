@@ -13,5 +13,11 @@
     group: elasticsearch
   notify: restart elasticsearch
 
+- name: install aws cloud plugin
+  elasticsearch_plugin:
+    name: cloud-aws
+  when: aws_install
+
 - name: Start Elasticsearch.
   service: name=elasticsearch state=started enabled=yes
+
