@@ -13,10 +13,15 @@
     group: elasticsearch
   notify: restart elasticsearch
 
-- name: install aws cloud plugin
-  elasticsearch_plugin:
-    name: cloud-aws
+- name: check if aws cloud plugin is installed
+  shell: >
+     {{ es_home }}/bin/plugin list cloud-aws | sed -n '1!p' | cut -d '-' -f2- 
+  register: installed_plugin
   when: aws_install
+
+- name: install aws cloud plugin
+  command: "{{ es_home }}/bin/plugin install cloud-aws"
+  when: aws_install and installed_plugin.stdout.find("cloud-aws") == -1
 
 - name: Start Elasticsearch.
   service: name=elasticsearch state=started enabled=yes
