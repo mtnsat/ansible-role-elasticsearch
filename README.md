@@ -1,6 +1,6 @@
 # Ansible Role: Elasticsearch
 
-[![Build Status](https://travis-ci.org/geerlingguy/ansible-role-elasticsearch.svg?branch=master)](https://travis-ci.org/geerlingguy/ansible-role-elasticsearch)
+[![Build Status](https://travis-ci.org/mtnsat/ansible-role-elasticsearch.svg?branch=master)](https://travis-ci.org/mtnsat/ansible-role-elasticsearch)
 
 An Ansible Role that installs Elasticsearch on RedHat/CentOS or Debian/Ubuntu.
 
@@ -21,7 +21,7 @@ None.
     - hosts: search
       roles:
         - { role: geerlingguy.java }
-        - { role: geerlingguy.elasticsearch }
+        - { role: mtnsat.elasticsearch }
 
 ## License
 
