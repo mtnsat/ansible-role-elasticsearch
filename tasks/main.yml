@@ -13,6 +13,16 @@
     group: elasticsearch
   notify: restart elasticsearch
 
+- name: list plugins
+  shell: "{{ es_home }}/bin/plugin list | grep -v 'Installed plugins in'"
+  register: installed_plugins
+  changed_when: false
+
+- name: install elasticsearch plugins
+  shell: "{{ es_home }}/bin/plugin install {{ item.src }}"
+  with_items: "{{ elasticsearch_plugins }}"
+  when: item.name not in installed_plugins.stdout
+
 - name: check if aws cloud plugin is installed
   shell: >
      {{ es_home }}/bin/plugin list cloud-aws | sed -n '1!p' | cut -d '-' -f2- 
