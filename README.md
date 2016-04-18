@@ -10,7 +10,7 @@ None.
 
 ## Role Variables
 
-None.
+- aws_install: true : installs and configures cloud-aws plugin
 
 ## Dependencies
 
