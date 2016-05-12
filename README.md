@@ -14,14 +14,16 @@ None.
 
 ## Dependencies
 
-  - geerlingguy.java
+  - mtn_oracle_java
 
 ## Example Playbook
 
     - hosts: search
       roles:
-        - { role: geerlingguy.java }
-        - { role: mtnsat.elasticsearch }
+        - role: mtnsat.elasticsearch
+          elasticsearch_version: 2.3.2
+
+All nodes in an elasticsearch cluster must have matching versions. Replication fails to nodes with lower minor versions.
 
 ## License
 
