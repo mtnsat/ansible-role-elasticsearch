@@ -30,7 +30,7 @@ node.name: {{ elasticsearch_node_name }}
 #
 # Path to directory where to store the data (separate multiple locations by comma):
 #
-# path.data: /path/to/data
+path.data: {{ mtn_volume_mount['mount_path']}}
 #
 # Path to log files:
 #
@@ -51,7 +51,7 @@ node.name: {{ elasticsearch_node_name }}
 #
 # Set the bind address to a specific IP (IPv4 or IPv6):
 #
-network.host: {{ elasticsearch_network_host }} 
+network.host: {{ elasticsearch_network_host }}
 #
 # Set a custom port for HTTP:
 #
@@ -79,7 +79,7 @@ discovery.zen.minimum_master_nodes: 1
 discovery.zen.ping.multicast.enabled: true
 cloud.node.auto_attributes: true
 cloud.aws.access_key: {{ aws_acces_key }}
-cloud.aws.secret_key: {{ aws_secret_key }} 
+cloud.aws.secret_key: {{ aws_secret_key }}
 discovery.ec2.groups: {{ elasticsearch_security_group }}
 {%- endif %}
 
