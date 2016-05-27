@@ -5,6 +5,14 @@
 - include: setup-Debian.yml
   when: ansible_os_family == 'Debian'
 
+- name: ensure mounted directory permissions
+  file:
+    path: "{{ mtn_volume_mount['mount_path']}}"
+    state: directory
+    owner: "{{ mtn_volume_mount['mount_permissions']['owner']}}"
+    group: "{{ mtn_volume_mount['mount_permissions']['group']}}"
+  when: mtn_volume_mount['mount_permissions'] is defined
+
 - name: Configure Elasticsearch.yml
   template:
     src: elasticsearch.yml.j2
@@ -25,7 +33,7 @@
 
 - name: check if aws cloud plugin is installed
   shell: >
-     {{ es_home }}/bin/plugin list cloud-aws | sed -n '1!p' | cut -d '-' -f2- 
+     {{ es_home }}/bin/plugin list cloud-aws | sed -n '1!p' | cut -d '-' -f2-
   register: installed_plugin
   when: aws_install is defined and aws_install
 
