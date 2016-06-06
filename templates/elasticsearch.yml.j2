@@ -30,7 +30,9 @@ node.name: {{ elasticsearch_node_name }}
 #
 # Path to directory where to store the data (separate multiple locations by comma):
 #
+{% if mtn_volume_mount is defined %}
 path.data: {{ mtn_volume_mount['mount_path']}}
+{% endif %}
 #
 # Path to log files:
 #
