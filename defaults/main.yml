@@ -7,8 +7,9 @@ elasticsearch_plugins:
     src: lmenezes/elasticsearch-kopf
   - name: head
     src: mobz/elasticsearch-head
+elasticsearch_jmxremote_port: 9020
 elasticsearch_java_opts: >-
-  -Dcom.sun.management.jmxremote.port=9020
+  -Dcom.sun.management.jmxremote.port={{ elasticsearch_jmxremote_port }}
   -Dcom.sun.management.jmxremote.local.only=false
   -Dcom.sun.management.jmxremote.authenticate=false
   -Dcom.sun.management.jmxremote.ssl=false
