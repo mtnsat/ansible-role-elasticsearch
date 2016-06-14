@@ -48,7 +48,6 @@
     line: "ES_JAVA_OPTS=\"{{ elasticsearch_java_opts }}\""
     insertafter: "^#ES_JAVA_OPTS"
   notify: restart elasticsearch
-
   when: elasticsearch_java_opts is defined
 
 - name: Start Elasticsearch.
