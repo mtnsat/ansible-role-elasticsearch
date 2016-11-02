@@ -21,15 +21,18 @@
     group: elasticsearch
   notify: restart elasticsearch
 
-- name: list plugins
-  shell: "{{ es_home }}/bin/elasticsearch-plugin list | grep -v 'Installed plugins in'"
-  register: installed_plugins
-  changed_when: false
+- block:
+  - name: list plugins
+    shell: "{{ es_home }}/bin/elasticsearch-plugin list | grep -v 'Installed plugins in'"
+    register: installed_plugins
+    changed_when: false
 
-- name: install elasticsearch plugins
-  shell: "{{ es_home }}/bin/elasticsearch-plugin install {{ item.src }}"
-  with_items: "{{ elasticsearch_plugins }}"
-  when: item.name not in installed_plugins.stdout and elasticsearch_plugins is defined
+
+  - name: install elasticsearch plugins
+    shell: "{{ es_home }}/bin/elasticsearch-plugin install {{ item.src }}"
+    with_items: "{{ elasticsearch_plugins }}"
+    when: item.name not in installed_plugins.stdout
+  when: elasticsearch_plugins is defined
 
 - block:
   - block:
