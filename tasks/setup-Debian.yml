@@ -6,7 +6,7 @@
 
 - name: Add Elasticsearch repository.
   apt_repository:
-    repo: 'deb http://packages.elastic.co/elasticsearch/2.x/debian stable main'
+    repo: 'deb https://artifacts.elastic.co/packages/5.x/apt stable main'
     state: present
     update_cache: yes
 
@@ -15,9 +15,12 @@
 
 - name: Set JVM heap size
   lineinfile:
-    dest: /etc/default/elasticsearch
-    regexp: "ES_HEAP_SIZE="
-    line: "ES_HEAP_SIZE={{ elasticsearch_heap_size }}"
+    dest: /etc/elasticsearch/jvm.options
+    regexp: "-{{ item }}"
+    line: "-{{ item }}{{ elasticsearch_heap_size }}"
   when: elasticsearch_heap_size is defined
+  with_items:
+    - Xms
+    - Xmx
   notify:
     - restart elasticsearch
