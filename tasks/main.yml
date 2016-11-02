@@ -22,12 +22,12 @@
   notify: restart elasticsearch
 
 - name: list plugins
-  shell: "{{ es_home }}/bin/plugin list | grep -v 'Installed plugins in'"
+  shell: "{{ es_home }}/bin/elasticsearch-plugin list | grep -v 'Installed plugins in'"
   register: installed_plugins
   changed_when: false
 
 - name: install elasticsearch plugins
-  shell: "{{ es_home }}/bin/plugin install {{ item.src }}"
+  shell: "{{ es_home }}/bin/elasticsearch-plugin install {{ item.src }}"
   with_items: "{{ elasticsearch_plugins }}"
   when: item.name not in installed_plugins.stdout
 
@@ -41,14 +41,14 @@
   command: "{{ es_home }}/bin/plugin install cloud-aws"
   when: aws_install is defined and aws_install and installed_plugin.stdout.find("cloud-aws") == -1
 
-- name: set elasticsearch JAVA_OPTS
-  lineinfile:
-    dest: /etc/default/elasticsearch
-    regexp: "^ES_JAVA_OPTS="
-    line: "ES_JAVA_OPTS=\"{{ elasticsearch_java_opts }}\""
-    insertafter: "^#ES_JAVA_OPTS"
-  notify: restart elasticsearch
-  when: elasticsearch_java_opts is defined
+#- name: set elasticsearch JAVA_OPTS
+#  lineinfile:
+#    dest: /etc/default/elasticsearch
+#    regexp: "^ES_JAVA_OPTS="
+#    line: "ES_JAVA_OPTS=\"{{ elasticsearch_java_opts }}\""
+#    insertafter: "^#ES_JAVA_OPTS"
+#  notify: restart elasticsearch
+#  when: elasticsearch_java_opts is defined
 
 - name: Start Elasticsearch.
   service: name=elasticsearch state=started enabled=yes
