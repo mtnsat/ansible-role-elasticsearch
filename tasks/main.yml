@@ -58,14 +58,14 @@
 
   when: aws_install is defined and aws_install
 
-#- name: set elasticsearch JAVA_OPTS
-#  lineinfile:
-#    dest: /etc/default/elasticsearch
-#    regexp: "^ES_JAVA_OPTS="
-#    line: "ES_JAVA_OPTS=\"{{ elasticsearch_java_opts }}\""
-#    insertafter: "^#ES_JAVA_OPTS"
-#  notify: restart elasticsearch
-#  when: elasticsearch_java_opts is defined
+- name: set elasticsearch JAVA_OPTS
+  lineinfile:
+    dest: /etc/default/elasticsearch
+    regexp: "^ES_JAVA_OPTS="
+    line: "ES_JAVA_OPTS=\"{{ elasticsearch_java_opts }}\""
+    insertafter: "^#ES_JAVA_OPTS"
+  notify: restart elasticsearch
+  when: elasticsearch_java_opts is defined
 
 - name: Start Elasticsearch.
   service: name=elasticsearch state=started enabled=yes
