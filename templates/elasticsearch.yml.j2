@@ -77,8 +77,6 @@ network.host: {{ elasticsearch_network_host }}
 # <http://www.elastic.co/guide/en/elasticsearch/reference/current/modules-discovery.html>
 {% if aws_install is defined and aws_install -%}
 discovery.type: ec2
-discovery.zen.minimum_master_nodes: 1
-discovery.zen.ping.multicast.enabled: true
 cloud.node.auto_attributes: true
 cloud.aws.access_key: {{ aws_acces_key }}
 cloud.aws.secret_key: {{ aws_secret_key }}
@@ -103,5 +101,3 @@ discovery.ec2.groups: {{ elasticsearch_security_group }}
 # Require explicit names when deleting indices:
 #
 # action.destructive_requires_name: true
-script.inline: on
-script.indexed: on

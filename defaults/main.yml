@@ -3,11 +3,6 @@ elasticsearch_cluster_name: sample_cluster
 elasticsearch_network_host: 0.0.0.0
 elasticsearch_heap_size: "{{ (ansible_memory_mb.real.total/2) | int }}m"
 elasticsearch_node_name: "{{ inventory_hostname }}"
-elasticsearch_plugins:
-  - name: kopf
-    src: lmenezes/elasticsearch-kopf
-  - name: head
-    src: mobz/elasticsearch-head
 elasticsearch_jmxremote_port: 9020
 elasticsearch_java_opts: >-
   -Dcom.sun.management.jmxremote.port={{ elasticsearch_jmxremote_port }}
@@ -16,4 +11,4 @@ elasticsearch_java_opts: >-
   -Dcom.sun.management.jmxremote.ssl=false
   -Djava.rmi.server.hostname={% if vagrant_test_env %}{{ ansible_eth1.ipv4.address }}{% else %}{{ ansible_eth0.ipv4.address }}{% endif %}
 es_home: /usr/share/elasticsearch
-elasticsearch_version: 2.4.0
+elasticsearch_version: 5.0.0
