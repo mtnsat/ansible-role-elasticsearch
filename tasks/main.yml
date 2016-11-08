@@ -51,24 +51,25 @@
   - block:
     - name: check if discovery ec2 plugin is installed
       shell: >
-         {{ es_home }}/bin/elasticsearch-plugin list discovery-ec2 | sed -n '1!p' | cut -d '-' -f2-
+         {{ es_home }}/bin/elasticsearch-plugin list discovery-ec2
       register: installed_plugin
 
-    - name: install aws cloud plugin
+    - name: install discovery-ec2 plugin
       command: "{{ es_home }}/bin/elasticsearch-plugin install discovery-ec2"
       when: installed_plugin.stdout.find("discovery-ec2") == -1
     when: elasticsearch_version > 5
 
   when: aws_install is defined and aws_install
+  tags: plugin
 
-- name: set elasticsearch JAVA_OPTS
-  lineinfile:
-    dest: /etc/default/elasticsearch
-    regexp: "^ES_JAVA_OPTS="
-    line: "ES_JAVA_OPTS=\"{{ elasticsearch_java_opts }}\""
-    insertafter: "^#ES_JAVA_OPTS"
-  notify: restart elasticsearch
-  when: elasticsearch_java_opts is defined
+#- name: set elasticsearch JAVA_OPTS
+#  lineinfile:
+#    dest: /etc/default/elasticsearch
+#    regexp: "^ES_JAVA_OPTS="
+#    line: "ES_JAVA_OPTS=\"{{ elasticsearch_java_opts }}\""
+#    insertafter: "^#ES_JAVA_OPTS"
+#  notify: restart elasticsearch
+#  when: elasticsearch_java_opts is defined
 
 - name: Start Elasticsearch.
   service: name=elasticsearch state=started enabled=yes
