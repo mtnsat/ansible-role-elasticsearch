@@ -62,6 +62,11 @@
   when: aws_install is defined and aws_install
   tags: plugin
 
+
+- include: upgrade.yml
+  tags: upgrade_elasticsearch
+  when: upgrade_elasticsearch_cluster == "1"
+
 #- name: set elasticsearch JAVA_OPTS
 #  lineinfile:
 #    dest: /etc/default/elasticsearch
