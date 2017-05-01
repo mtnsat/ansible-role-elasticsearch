@@ -12,6 +12,7 @@
 
 - name: Install Elasticsearch.
   apt: pkg=elasticsearch={{ elasticsearch_version }} state=present
+  notify: restart elasticsearch
 
 - name: Set JVM heap size
   lineinfile:
@@ -22,5 +23,4 @@
   with_items:
     - Xms
     - Xmx
-  notify:
-    - restart elasticsearch
+  notify: restart elasticsearch
