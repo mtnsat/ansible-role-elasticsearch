@@ -73,10 +73,3 @@
 
 - name: Start Elasticsearch.
   service: name=elasticsearch state=started enabled=yes
-
-- name: upgrade elasticsearch cluster
-  include: upgrade_elasticsearch.yml
-  when: (elasticsearch_cluster_upgrade == True and elasticsearch_cluster_upgrade is defined)
-  tags: elasticsearch_upgrade
-  serial: 1
-  max_fail_percentage: 1
