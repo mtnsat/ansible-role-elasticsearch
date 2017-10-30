@@ -11,7 +11,9 @@
     state: directory
     owner: "{{ mtn_volume_mount['mount_permissions']['owner']}}"
     group: "{{ mtn_volume_mount['mount_permissions']['group']}}"
-  when: mtn_volume_mount['mount_permissions'] is defined and mtn_volume_mount is defined
+  when:
+    - mtn_volume_mount is defined
+    - mtn_volume_mount['mount_permissions'] is defined
 
 - name: Configure Elasticsearch.yml
   template:
