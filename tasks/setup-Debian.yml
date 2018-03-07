@@ -6,7 +6,7 @@
 
 - name: Add Elasticsearch repository.
   apt_repository:
-    repo: "{{ elasticsearch_apt_repo }}"
+    repo: "{{ elastic_apt_repo }}"
     state: present
     update_cache: yes
 
