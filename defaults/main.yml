@@ -11,4 +11,5 @@ elasticsearch_java_opts: >-
   -Dcom.sun.management.jmxremote.ssl=false
   -Djava.rmi.server.hostname={{ ansible_default_ipv4.address }}
 es_home: /usr/share/elasticsearch
-elasticsearch_version: 5.0.0
+elasticsearch_version: 6.2.2
+elasticsearch_apt_repo: 'deb https://artifacts.elastic.co/packages/6.x/apt stable main'
