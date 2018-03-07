@@ -32,7 +32,7 @@ node.name: {{ elasticsearch_node_name }}
 #
 {% if mtn_volume_mount is defined %}
 path.data: {{ mtn_volume_mount['mount_path']}}
-{% elif %}
+{% else %}
 path.data: /var/lib/elasticsearch
 {% endif %}
 #
