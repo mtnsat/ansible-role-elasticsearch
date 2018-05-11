@@ -82,10 +82,8 @@ network.host: {{ elasticsearch_network_host }}
 # For more information, see the documentation at:
 # <http://www.elastic.co/guide/en/elasticsearch/reference/current/modules-discovery.html>
 {% if aws_install is defined and aws_install -%}
-discovery.type: ec2
+discovery.zen.hosts_provider: ec2
 cloud.node.auto_attributes: true
-cloud.aws.access_key: {{ aws_acces_key }}
-cloud.aws.secret_key: {{ aws_secret_key }}
 discovery.ec2.groups: {{ elasticsearch_security_group }}
 {%- endif %}
 

@@ -12,4 +12,4 @@ elasticsearch_java_opts: >-
   -Djava.rmi.server.hostname={{ ansible_default_ipv4.address }}
 es_home: /usr/share/elasticsearch
 elasticsearch_version: 6.2.2
-elasticsearch_apt_repo: 'deb https://artifacts.elastic.co/packages/6.x/apt stable main'
+elastic_apt_repo: 'deb https://artifacts.elastic.co/packages/6.x/apt stable main'
