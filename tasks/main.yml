@@ -57,7 +57,7 @@
       register: installed_plugin
 
     - name: install discovery-ec2 plugin
-      command: "{{ es_home }}/bin/elasticsearch-plugin install discovery-ec2"
+      command: "{{ es_home }}/bin/elasticsearch-plugin install discovery-ec2 --force"
       when: installed_plugin.stdout.find("discovery-ec2") == -1
     when: elasticsearch_version > 5
 
