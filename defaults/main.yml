@@ -4,6 +4,10 @@ elasticsearch_network_host: 0.0.0.0
 elasticsearch_heap_size: "{{ (ansible_memory_mb.real.total/2) | int }}m"
 elasticsearch_node_name: "{{ inventory_hostname }}"
 elasticsearch_jmxremote_port: 9020
+es_http_port: 9200
+es_transport_port: 9300
+es_disable_allocation:  '{"transient":{"cluster.routing.allocation.enable":"none"}}'
+es_enable_allocation: '{"transient":{"cluster.routing.allocation.enable": "all"}}'
 elasticsearch_java_opts: >-
   -Dcom.sun.management.jmxremote.port={{ elasticsearch_jmxremote_port }}
   -Dcom.sun.management.jmxremote.local.only=false

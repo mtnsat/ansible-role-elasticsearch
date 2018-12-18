@@ -1,0 +1,89 @@
+---
+- name: check current version
+  uri: url=http://localhost:{{ es_http_port }} method=GET
+  register: version_found
+  retries: 10
+  delay: 10
+
+- name: Display Current Elasticsearch Version
+  debug:
+    msg: "{{ version_found.json.version.number }}"
+
+- block:
+  - name: make sure elasticsearch service is running
+    service: name=elasticsearch enabled=yes state=started
+    register: response
+
+  - name: Wait for elasticsearch node to come back up if it was stopped
+    wait_for: port={{ es_transport_port }} delay=45
+    when: response.changed == true
+
+  # this step is key!!!  Don't restart more nodes
+  # until all shards have completed recovery
+  - name: Wait for cluster health to return to green
+    uri: url=http://localhost:{{ es_http_port }}/_cluster/health method=GET
+    register: response
+    until: "response.json.status == 'green'"
+    retries: 50
+    delay: 30
+
+  - name: Disable shard allocation for the cluster
+    uri:
+      url: "http://localhost:{{ es_http_port }}/_cluster/settings"
+      method: PUT
+      body: '{{ es_disable_allocation | to_json }}'
+
+  - name: Shutdown elasticsearch node
+    uri: url=http://localhost:{{ es_http_port }}/_cluster/nodes/_local/_shutdown method=POST
+
+  - name: Wait for all shards to be reallocated
+    uri: url=http://localhost:{{ es_http_port }}/_cluster/health method=GET
+    register: response
+    until: "response.json.relocating_shards == 0"
+    retries: 10
+    delay: 30
+
+  - name: check if discovery ec2 plugin is installed
+    shell: >
+       {{ es_home }}/bin/elasticsearch-plugin list discovery-ec2
+    register: installed_plugin
+
+  - name: remove discovery-ec2 plugin
+    command: "{{ es_home }}/bin/elasticsearch-plugin remove discovery-ec2"
+    when: installed_plugin.stdout.find("discovery-ec2") == -1
+
+  # this is specific to Ubuntu / Debian based distributions
+  - include: setup-RedHat.yml
+    when: ansible_os_family == 'RedHat'
+
+  - include: setup-Debian.yml
+    when: ansible_os_family == 'Debian'
+
+  - name: check if discovery ec2 plugin is installed
+    shell: >
+       {{ es_home }}/bin/elasticsearch-plugin list discovery-ec2
+    register: installed_plugin
+
+  - name: install discovery-ec2 plugin
+    command: "{{ es_home }}/bin/elasticsearch-plugin install discovery-ec2"
+    when: installed_plugin.stdout.find("discovery-ec2") == -1
+
+  - name: Wait for elasticsearch node to come back up
+    wait_for: port={{ es_transport_port }} delay=35
+
+  - name: Wait for cluster health to return to yellow or green
+    uri: url=http://localhost:{{ es_http_port }}/_cluster/health method=GET
+    register: response
+    until: "response.json.status == 'yellow' or response.json.status == 'green'"
+    retries: 5
+    delay: 30
+
+  - name: Enable shard allocation for the cluster
+    uri: url=http://localhost:{{ es_http_port }}/_cluster/settings method=PUT body='{{ es_enable_allocation }}'
+    register: response
+      # next line is boolean not string, so no quotes around true
+      # use python truthiness
+    until: "response.json.acknowledged == true"
+    retries: 5
+    delay: 30
+  when: version_found.json.version.number != '{{ elasticsearch_version }}'
