@@ -62,6 +62,7 @@
       when: installed_plugin.stdout.find("discovery-ec2") == -1
 
     - include: elasticsearch.keystore.yml
+      when: elasticsearch_key_bucket is defined
 
     when: elasticsearch_version > 5
 
