@@ -49,6 +49,7 @@
     when: elasticsearch_version < 5
 ##########################################################
 # cloud-aws plugin is updated to discovery-ec2 in elastic5
+# and later versions
 ###########################################################
   - block:
     - name: check if discovery ec2 plugin is installed
@@ -59,7 +60,11 @@
     - name: install discovery-ec2 plugin
       command: "{{ es_home }}/bin/elasticsearch-plugin install discovery-ec2 --batch"
       when: installed_plugin.stdout.find("discovery-ec2") == -1
+
+    - include: elasticsearch.keystore.yml
+
     when: elasticsearch_version > 5
+
 
   when: aws_install is defined and aws_install
   tags: plugin
@@ -72,6 +77,8 @@
 #    insertafter: "^#ES_JAVA_OPTS"
 #  notify: restart elasticsearch
 #  when: elasticsearch_java_opts is defined
+
+
 
 - name: Start Elasticsearch.
   service: name=elasticsearch state=started enabled=yes
