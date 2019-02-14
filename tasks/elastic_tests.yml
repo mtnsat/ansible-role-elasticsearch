@@ -1,4 +1,4 @@
 ---
 - name: Checks to see if elasticsearch is up
   uri:
-    url: "http://{{ elasticsearch_host }}:9200"
+    url: "http://{{ ansible_host }}:9200/"
