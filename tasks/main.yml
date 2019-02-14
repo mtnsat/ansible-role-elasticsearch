@@ -83,3 +83,5 @@
 
 - name: Start Elasticsearch.
   service: name=elasticsearch state=started enabled=yes
+
+- include: elastic_tests.yml
