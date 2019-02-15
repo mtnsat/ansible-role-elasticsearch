@@ -1,7 +1,10 @@
 ---
-- name: sleep for 5 seconds
-  wait_for: timeout=5
-  
+- name: Wait for port 9200
+  wait_for:
+    timeout: 30
+    port: 9200
+    delay: 5
+
 - name: Checks to see if elasticsearch is up
   uri:
     url: "http://{{ ansible_host }}:9200/"
