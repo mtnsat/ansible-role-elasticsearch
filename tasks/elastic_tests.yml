@@ -2,3 +2,9 @@
 - name: Checks to see if elasticsearch is up
   uri:
     url: "http://{{ ansible_host }}:9200/"
+  register: elasticsearch_status
+
+- name: assert that we have the right version running
+  assert:
+    that: elasticsearch_status.json.version.number == "{{ elasticsearch_version }}"
+    msg: "installed elasticsearch version does not match the one in the inventory"
