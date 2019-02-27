@@ -64,9 +64,6 @@
     - include: elasticsearch.keystore.yml
       when: elasticsearch_key_bucket is defined
 
-    - include: logstash.keystore.yml
-      when: elasticsearch_key_bucket is defined
-
     when: elasticsearch_version > 5
 
 
