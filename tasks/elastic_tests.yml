@@ -1,0 +1,19 @@
+---
+- name: Wait for port 9200
+  wait_for:
+    timeout: 30
+    port: 9200
+    delay: 5
+  tags: test
+
+- name: Checks to see if elasticsearch is up
+  uri:
+    url: "http://{{ ansible_host }}:9200/"
+  register: elasticsearch_status
+  tags: test
+
+- name: assert that we have the right version running
+  assert:
+    that: elasticsearch_status.json.version.number == "{{ elasticsearch_version }}"
+    msg: "installed elasticsearch version does not match the one in the inventory"
+  tags: test

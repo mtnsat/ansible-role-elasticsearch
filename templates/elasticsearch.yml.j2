@@ -85,6 +85,7 @@ network.host: {{ elasticsearch_network_host }}
 discovery.zen.hosts_provider: ec2
 cloud.node.auto_attributes: true
 discovery.ec2.groups: {{ elasticsearch_security_group }}
+discovery.zen.ping.unicast.hosts: {{ discovery_zen_ping_unicast_hosts }}
 {%- endif %}
 
 # ---------------------------------- Gateway -----------------------------------
